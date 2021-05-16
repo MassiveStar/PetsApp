@@ -6,9 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.petsapp25042021.R
+import com.example.petsapp25042021.data.PetDatabase
 import com.example.petsapp25042021.databinding.FragmentBlankOneBinding
+import com.example.petsapp25042021.viewmodels.PetsViewModel
+import com.example.petsapp25042021.viewmodels.PetsViewModelFactory
 
 /**
  * A simple [Fragment] subclass.
@@ -18,6 +22,7 @@ import com.example.petsapp25042021.databinding.FragmentBlankOneBinding
 class BlankFragmentOne : Fragment() {
 
     lateinit var binding: FragmentBlankOneBinding
+    lateinit var viewModel: PetsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +31,13 @@ class BlankFragmentOne : Fragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(
             inflater,R.layout.fragment_blank_one,container,false)
+
+        val application = requireActivity().application
+        val dataSource = PetDatabase.getInstance(application).petDatabaseDao
+        val viewModelFactory = PetsViewModelFactory(dataSource, application)
+
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
+            .get(PetsViewModel::class.java)
 
         binding.floatingActionButton.setOnClickListener {
             it.findNavController().navigate(R.id.action_blankFragmentOne_to_blankFragmentTwo) }
