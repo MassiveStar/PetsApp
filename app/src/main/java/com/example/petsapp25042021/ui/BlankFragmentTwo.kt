@@ -1,10 +1,8 @@
 package com.example.petsapp25042021.ui
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -32,6 +30,8 @@ class BlankFragmentTwo : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater,R.layout.fragment_blank_two,container,false)
 
+        setHasOptionsMenu(true)
+
         val application = requireActivity().application
         val dataSource = PetDatabase.getInstance(application).petDatabaseDao
         val viewModelFactory = PetsViewModelFactory(dataSource, application)
@@ -44,5 +44,18 @@ class BlankFragmentTwo : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_editor, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId){
+            R.id.action_save -> true
+            R.id.action_delete -> true
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
